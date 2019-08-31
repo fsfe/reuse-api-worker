@@ -48,8 +48,9 @@
 
     - name: Build reuse-api Docker image
       raw: |
-        git clone https://git.fsfe.org/reuse/api.git reuse-api
-        docker build --no-cache -t reuse-api reuse-api/docker/
+        docker pull fsfe/reuse:latest
+        git clone https://git.fsfe.org/reuse/api-worker.git reuse-api
+        docker build --no-cache -t reuse-api reuse-api/docker-image/
         rm -rf reuse-api/
         docker rmi $(docker images | grep "<none>" | awk "{print \$3}") || true
       tags:
