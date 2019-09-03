@@ -17,5 +17,4 @@ fi
 git clone --depth 1 "${GIT}" /project
 
 # Running reuse lint with optional parameters
-printf "\nChecking REUSE compliance for commit $(git rev-parse HEAD):\n\n"
 reuse lint "${OPTIONS}"
