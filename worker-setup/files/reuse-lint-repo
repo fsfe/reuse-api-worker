@@ -3,7 +3,8 @@
 # SPDX-FileCopyrightText: 2019 Free Software Foundation Europe e.V.
 
 REPO="${1}"
-ENV="${2}"
+REUSE_OPT_GLOBAL="${2}"
+REUSE_OPT_LINT="${3}"
 TMP="$(mktemp)"
 
 if [ -z ${REPO} ]; then
@@ -11,14 +12,17 @@ if [ -z ${REPO} ]; then
   exit 41
 fi
 
-if [ -z ${ENV} ]; then
-  docker run --rm reuse-api "${REPO}"
-  status=$?
-else
-  echo "REUSE_OPT=${ENV}" > $TMP
-  docker run --env-file $TMP --rm reuse-api "${REPO}"
-  status=$?
-fi
+# Create ENV file containing REUSE args
+echo "REUSE_OPT_GLOBAL=${REUSE_OPT_GLOBAL}" > $TMP
+echo "REUSE_OPT_LINT=${REUSE_OPT_LINT}" >> $TMP
+
+# Extract name for docker container
+DNAME="$(basename "$(dirname "${REPO}")")__$(basename "${REPO}")"
+DNAME=${DNAME}__${RANDOM}
+
+# Run docker image and return status
+docker run --env-file $TMP --name "${DNAME}" reuse-api "${REPO}"
+status=$?
 
 rm $TMP
 
