@@ -18,10 +18,9 @@ echo "REUSE_OPT_LINT=${REUSE_OPT_LINT}" >> $TMP
 
 # Extract name for docker container
 DNAME="$(basename "$(dirname "${REPO}")")__$(basename "${REPO}")"
-DNAME=${DNAME}__${RANDOM}
 
 # Run docker image and return status
-docker run --env-file $TMP --name "${DNAME}" reuse-api "${REPO}"
+docker run --env-file $TMP --name "${DNAME}" --rm reuse-api "${REPO}"
 status=$?
 
 rm $TMP
