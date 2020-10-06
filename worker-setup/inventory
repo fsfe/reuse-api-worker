@@ -3,3 +3,4 @@
 
 [reuse_api_servers]
 wrk1.api.reuse.software   ansible_user=ubuntu
+wrk2.api.reuse.software   ansible_user=root
