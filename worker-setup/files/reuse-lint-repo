@@ -17,7 +17,7 @@ echo "REUSE_OPT_GLOBAL=${REUSE_OPT_GLOBAL}" > $TMP
 echo "REUSE_OPT_LINT=${REUSE_OPT_LINT}" >> $TMP
 
 # Extract name for docker container
-DNAME="$(basename "$(dirname "${REPO}")")__$(basename "${REPO}")"
+DNAME="$(basename "$(dirname "${REPO}")")__$(basename "${REPO}")__$(echo ${REPO} | xxh32sum | awk '{print $1}'  )"
 
 # Run docker image and return status
 docker run --env-file $TMP --name "${DNAME}" --rm reuse-api "${REPO}"
