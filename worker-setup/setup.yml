@@ -5,6 +5,8 @@
 - name: Setup instance to delegate REUSE checks to
   hosts: all
   become: true
+  vars:
+    api_env: "{{ lookup('env', 'API_ENV') }}"
 
   tasks:
 
@@ -12,6 +14,7 @@
       apt:
         name: "*"
         state: latest
+        update_cache: yes
       tags:
       - upgrade
 
@@ -19,7 +22,6 @@
       apt:
         name: "{{ packages }}"
         state: present
-        update_cache: yes
       vars:
         packages:
         - docker.io
@@ -47,16 +49,27 @@
       with_file:
         - files/reuse_ed25519.pub
 
-    - name: Build reuse-api Docker image
+    - name: Set additional authorized_keys for root user if devel environment
+      authorized_key:
+        user: root
+        state: present
+        key: "{{ item }}"
+        key_options: 'command="reuse-lint-repo ${SSH_ORIGINAL_COMMAND#* }",no-port-forwarding,no-X11-forwarding,no-pty'
+      with_file:
+        - files/test_ed25519.pub
+      when: api_env == "devel"
+
+    - name: Build reuse-api-worker-runner Docker image
       raw: |
         docker pull fsfe/reuse:latest
         git clone https://git.fsfe.org/reuse/api-worker.git reuse-api
-        docker build --no-cache -t reuse-api reuse-api/docker-image/
+        docker build --no-cache -t reuse-api-worker-runner reuse-api/docker-image/
         rm -rf reuse-api/
         docker rmi $(docker images | grep "<none>" | awk "{print \$3}") || true
       tags:
       - docker
       - upgrade
+      when: api_env != "devel"
 
     - name: Create reuse bin directory
       file:

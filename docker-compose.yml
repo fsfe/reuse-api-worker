@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: 2020 Free Software Foundation Europe e.V.
+
+version: '3'
+services:
+  reuse-api-worker:
+    container_name: reuse-api-worker
+    build: .
+    image: reuse-api-worker
+    restart: always
+    expose:
+      - "22"
+    # Docker in container uses the host's Docker socket
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    # Hook onto REUSE API network
+    networks:
+      - reuse-api-net
+
+networks:
+  reuse-api-net:
+    external: true
