@@ -8,9 +8,6 @@ GIT="${1}"
 OPTIONS1="${REUSE_OPT_GLOBAL}"
 OPTIONS2="${REUSE_OPT_LINT}"
 
-# echo "Global REUSE options: ${REUSE_OPT_GLOBAL}"
-# echo "REUSE lint options: ${REUSE_OPT_LINT}"
-
 # Test if remote repository is valid
 if ! timeout 5 git ls-remote "${GIT}" > /dev/null; then
   echo "${GIT} is not a valid git repository"
