@@ -7,14 +7,22 @@ REUSE_OPT_GLOBAL="${2}"
 REUSE_OPT_LINT="${3}"
 TMP="$(mktemp)"
 
+LOGFILE="/tmp/reuse.log"
+
+log () {
+  echo "[$(date +"%Y-%m-%d %H:%M:%S")] $@" | tee -a "${LOGFILE}"
+}
+
+log "Check repo ${REPO} with optional arguments: ${REUSE_OPT_GLOBAL} ${REUSE_OPT_LINT}"
+
 # Test if repo URL provided
 if [[ -z ${REPO} ]]; then
-  echo "No repo URL provided"
+  log "No repo URL provided"
   exit 41
 fi
 # Test if API worker runner image exists
 if [[ "$(docker images -q reuse-api-worker-runner 2> /dev/null)" == "" ]]; then
-  echo "reuse-api-worker-runner Docker image does not exist."
+  log "reuse-api-worker-runner Docker image does not exist."
   exit 42
 fi
 
@@ -30,5 +38,7 @@ docker run --env-file $TMP --name "${DNAME}" --rm reuse-api-worker-runner "${REP
 status=$?
 
 rm $TMP
+
+log "Exit with ${status}"
 
 exit $status

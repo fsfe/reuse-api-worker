@@ -21,6 +21,9 @@ RUN echo "localhost ansible_connection=local" > inv
 COPY . .
 RUN ansible-playbook -i inv ./worker-setup/setup.yml
 
-# Start SSH daemon in foregound
+# Create logfile
+RUN touch /tmp/reuse.log
+
+# Start SSH daemon in foregound, and read log file
 RUN mkdir /var/run/sshd
-CMD ["/usr/sbin/sshd", "-D"]
+CMD /usr/sbin/sshd -E /tmp/reuse.log && tail -f /tmp/reuse.log
