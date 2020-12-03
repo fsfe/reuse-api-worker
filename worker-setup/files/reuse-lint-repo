@@ -10,7 +10,7 @@ TMP="$(mktemp)"
 LOGFILE="/tmp/reuse.log"
 
 log () {
-  echo "[$(date +"%Y-%m-%d %H:%M:%S")] $@" | tee -a "${LOGFILE}"
+  echo "[$(date +"%Y-%m-%d %H:%M:%S")] $*" >> "${LOGFILE}"
 }
 
 log "Check repo ${REPO} with optional arguments: ${REUSE_OPT_GLOBAL} ${REUSE_OPT_LINT}"
