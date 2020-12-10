@@ -39,6 +39,6 @@ status=$?
 
 rm $TMP
 
-log "Exit with ${status}"
+log "Exit ${REPO} with ${status}"
 
 exit $status
