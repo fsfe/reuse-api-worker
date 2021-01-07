@@ -1,7 +1,9 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # SPDX-FileCopyrightText: 2019 Free Software Foundation Europe e.V.
 
-[reuse_api_servers]
-wrk1.api.reuse.software   ansible_user=ubuntu
-wrk2.api.reuse.software   ansible_user=root
-wrk3.api.reuse.software   ansible_user=root
+[reuse_api_servers_ubuntu]
+wrk1.api.reuse.software
+
+[reuse_api_servers_root]
+wrk2.api.reuse.software
+wrk3.api.reuse.software
