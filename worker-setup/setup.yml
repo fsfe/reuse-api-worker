@@ -4,7 +4,7 @@
 
 - name: Setup instance to delegate REUSE checks to
   hosts: all
-  become: true
+  remote_user: root
   vars:
     api_env: "{{ lookup('env', 'API_ENV') }}"
 

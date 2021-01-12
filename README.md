@@ -19,9 +19,18 @@ service](https://git.fsfe.org/reuse/api).
 
 ### Server
 
-Just run `ansible-playbook -i inventory setup.yml` to deploy all hosts
-given in the inventory. Make sure that you have SSH access to the given
-`ansible_user`, and that this user has sudo permissions to become root.
+Just run 
+
+``` shell
+ansible-playbook setup.yml \
+        -i inventory/hosts \
+        -l "wrk3.api.reuse.software" \
+        # limit to groups \
+        # -l "reuse_api_server_ubuntu,reuse_api_server_root" \
+```
+
+from the `worker_setup` directory to deploy all hosts given in the inventory.
+You need access to the root user of the server.
 
 Note the tags that allow you to only run specific routines.
 

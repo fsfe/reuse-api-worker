@@ -1,0 +1,3 @@
+[submodule "worker-setup/inventory"]
+	path = worker-setup/inventory
+	url = git@git.fsfe.org:fsfe-system-hackers/inventory.git
