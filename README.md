@@ -17,6 +17,16 @@ service](https://git.fsfe.org/reuse/api).
 
 ## Installation
 
+Clone this repo:
+``` bash
+git clone --recurse-submodules git@git.fsfe.org:fsfe-system-hackers/fsfe-backup.git
+```
+
+Update the repo including its sudmodule, most importantly the [inventory repository](https://git.fsfe.org/fsfe-system-hackers/inventory) 
+``` bash
+git pull --recurse-submodules
+```
+
 ### Server
 
 Just run 
