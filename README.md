@@ -22,9 +22,11 @@ Clone this repo:
 git clone --recurse-submodules git@git.fsfe.org:fsfe-system-hackers/fsfe-backup.git
 ```
 
-Update the repo including its sudmodule, most importantly the [inventory repository](https://git.fsfe.org/fsfe-system-hackers/inventory) 
+Update the [inventory
+submodule](https://git.fsfe.org/fsfe-system-hackers/inventory) to reflect the
+newest changes to the list of our hosts and the groups that they are in 
 ``` bash
-git pull --recurse-submodules
+git submodule update --remote
 ```
 
 ### Server
