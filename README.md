@@ -19,26 +19,26 @@ service](https://git.fsfe.org/reuse/api).
 
 Clone this repo:
 ``` bash
-git clone --recurse-submodules git@git.fsfe.org:fsfe-system-hackers/fsfe-backup.git
+git clone --recurse-submodules git@git.fsfe.org:reuse/api-worker.git
 ```
 
 Update the [inventory
 submodule](https://git.fsfe.org/fsfe-system-hackers/inventory) to reflect the
-newest changes to the list of our hosts and the groups that they are in 
+newest changes to the list of our hosts and the groups that they are in
 ``` bash
 git submodule update --remote
 ```
 
 ### Server
 
-Just run 
+Just run
 
 ``` shell
 ansible-playbook setup.yml \
         -i inventory/hosts \
-        -l "wrk3.api.reuse.software" \
-        # limit to groups \
-        # -l "reuse_api_server_ubuntu,reuse_api_server_root" \
+        -l "reuse_api_server" \
+        # limit to single server \
+        # -l "wrk3.api.reuse.software" \
 ```
 
 from the `worker_setup` directory to deploy all hosts given in the inventory.
@@ -58,7 +58,7 @@ To build the image, run `docker build -t reuse-api .`
 Running the check is fairly simple:
 
 ```text
-$ ssh -i ~/.ssh/reuse_ed25519 reuse@wrk1.api.reuse.software reuse-lint-repo https://git.fsfe.org/reuse/website
+$ ssh -i ~/.ssh/reuse_ed25519 reuse@wrk3.api.reuse.software reuse-lint-repo https://git.fsfe.org/reuse/website
 Cloning into '/project'...
 
 Checking REUSE compliance for commit d3121becd4d715df40ba6b72394582b85d1c5cc9:

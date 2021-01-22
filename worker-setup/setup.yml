@@ -3,7 +3,7 @@
 # SPDX-FileCopyrightText: 2019 Free Software Foundation Europe e.V.
 
 - name: Setup instance to delegate REUSE checks to
-  hosts: all
+  hosts: reuse_api_servers
   remote_user: root
   vars:
     api_env: "{{ lookup('env', 'API_ENV') }}"
