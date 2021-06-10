@@ -27,17 +27,22 @@ if [[ "$(docker images -q reuse-api-worker-runner 2> /dev/null)" == "" ]]; then
 fi
 
 # Create ENV file containing REUSE args
-echo "REUSE_OPT_GLOBAL=${REUSE_OPT_GLOBAL}" > $TMP
-echo "REUSE_OPT_LINT=${REUSE_OPT_LINT}" >> $TMP
+echo "REUSE_OPT_GLOBAL=${REUSE_OPT_GLOBAL}" > "$TMP"
+echo "REUSE_OPT_LINT=${REUSE_OPT_LINT}" >> "$TMP"
 
-# Extract name for docker container
-DNAME="$(basename "$(dirname "${REPO}")")__$(basename "${REPO}")__$(echo ${REPO} | xxh32sum | awk '{print $1}'  )"
+# Compose name for docker container derived from user__repo
+# + limit to 255 characters in total (Docker limit)
+# + add a short hash from the whole repository URL
+# + replace invalid characters
+DNAME_REPO="$(echo "$(basename "$(dirname "${REPO}")")__$(basename "${REPO}")" | cut -c -245)"
+DNAME_HASH="$(echo "${REPO}" | xxh32sum | awk '{print $1}')"
+DNAME="$(echo "${DNAME_REPO}__${DNAME_HASH}" | sed -E -e 's/^[^a-zA-Z0-9]//' -e 's/[^a-zA-Z0-9_.-]//g')"
 
 # Run docker image and return status
-docker run --env-file $TMP --name "${DNAME}" --rm reuse-api-worker-runner "${REPO}"
+docker run --env-file "$TMP" --name "${DNAME}" --rm reuse-api-worker-runner "${REPO}"
 status=$?
 
-rm $TMP
+rm "$TMP"
 
 log "Exit ${REPO} with ${status}"
 
