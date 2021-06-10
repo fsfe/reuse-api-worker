@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: Free Software Foundation Europe e.V.
 [submodule "worker-setup/inventory"]
 	path = worker-setup/inventory
 	url = git@git.fsfe.org:fsfe-system-hackers/inventory.git

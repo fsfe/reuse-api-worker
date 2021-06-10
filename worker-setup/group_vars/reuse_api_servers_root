@@ -1,2 +1,4 @@
 ---
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: Free Software Foundation Europe e.V.
 ansible_user: root
