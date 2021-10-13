@@ -91,3 +91,9 @@
       copy:
         content: 'PATH="/home/reuse/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"'
         dest: /etc/environment
+
+    - name: Set cronjob to prune unused Docker networks
+      cron:
+        name: "Prune unused Docker networks"
+        special_time: hourly
+        job: "docker network prune -f"
