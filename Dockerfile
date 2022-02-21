@@ -15,11 +15,11 @@ RUN apt-get update -y && apt-get upgrade -y \
     && apt-get install -y ansible python aptitude openssh-server
 
 # Let ansible run on this Docker image, not the productive inventory
-RUN echo "localhost ansible_connection=local" > inv
+RUN echo '[reuse_api_servers] \nlocalhost ansible_connection=local' > inv.ini
 
 # Run Ansible
 COPY . .
-RUN ansible-playbook -i inv ./worker-setup/setup.yml
+RUN ansible-playbook -i inv.ini ./worker-setup/setup.yml
 
 # Create logfile
 RUN touch /tmp/reuse.log

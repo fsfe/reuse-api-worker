@@ -24,6 +24,7 @@
         state: present
       vars:
         packages:
+        - cron
         - docker.io
         - git
         - xxhash
