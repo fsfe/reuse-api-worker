@@ -5,6 +5,8 @@
 
 # REUSE API Worker
 
+[![REUSE status](https://api.reuse.software/badge/git.fsfe.org/reuse/api-worker)](https://api.reuse.software/info/git.fsfe.org/reuse/api-worker)
+
 This repository contains two elements for the REUSE API's worker server:
 
 * The Ansible playbook that initiates (and updates) the worker server
