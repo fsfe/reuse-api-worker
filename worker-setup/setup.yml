@@ -72,26 +72,14 @@
       - upgrade
       when: api_env != "devel"
 
-    - name: Create reuse bin directory
-      file:
-        path: /home/reuse/bin
-        state: directory
-        owner: reuse
-        group: reuse
-
     - name: Deploy wrapper script
       copy:
         src: files/reuse-lint-repo
-        dest: /home/reuse/bin/reuse-lint-repo
+        dest: /usr/local/bin/reuse-lint-repo
         owner: reuse
-        group: reuse
+        group: root
         mode: "0755"
       tags: script
-
-    - name: Set PATH
-      copy:
-        content: 'PATH="/home/reuse/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"'
-        dest: /etc/environment
 
     - name: Set cronjob to prune unused Docker networks
       cron:
