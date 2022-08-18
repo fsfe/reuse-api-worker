@@ -34,6 +34,7 @@
         name: docker
         state: started
         enabled: yes
+      when: api_env != "devel"
 
     - name: Create reuse user
       user:
