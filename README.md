@@ -108,7 +108,7 @@ does it):
 
 `docker exec reuse-api-worker reuse-lint-repo https://github.com/fsfe/reuse-tool`
 
-`ssh -i ./worker-setup/files/test_ed25519 root@DOCKER-CONTAINER-IP https://git.fsfe.org/reuse/api-worker`
+`ssh -i ./worker-setup/files/test_ed25519 root@DOCKER-CONTAINER-IP reuse-lint-repo https://git.fsfe.org/reuse/api-worker`
 
 Note that for the latter you enter as root (unlike with the production
 API), and you require the container's IP address. In a Docker network,
