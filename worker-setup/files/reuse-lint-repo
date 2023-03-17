@@ -2,9 +2,12 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # SPDX-FileCopyrightText: 2019 Free Software Foundation Europe e.V.
 
+# TODO: rewrite to Python with proper args
+
 REPO="${1}"
-REUSE_OPT_GLOBAL="${2}"
-REUSE_OPT_LINT="${3}"
+REUSE_GLOBAL_OPTIONS="${2}"
+REUSE_LINT_OPTIONS="${3}"
+REUSE_SPDX_OPTIONS="${4}"
 TMP="$(mktemp)"
 
 LOGFILE="/tmp/reuse.log"
@@ -13,7 +16,7 @@ log () {
   echo "[$(date +"%Y-%m-%d %H:%M:%S")] $*" >> "${LOGFILE}"
 }
 
-log "Check repo ${REPO} with optional arguments: ${REUSE_OPT_GLOBAL} ${REUSE_OPT_LINT}"
+log "Check repo ${REPO} with optional arguments: global:${REUSE_GLOBAL_OPTIONS} lint:${REUSE_LINT_OPTIONS} spdx:${REUSE_SPDX_OPTIONS}"
 
 # Test if repo URL provided
 if [[ -z ${REPO} ]]; then
@@ -26,10 +29,6 @@ if [[ "$(docker images -q reuse-api-worker-runner 2> /dev/null)" == "" ]]; then
   exit 42
 fi
 
-# Create ENV file containing REUSE args
-echo "REUSE_OPT_GLOBAL=${REUSE_OPT_GLOBAL}" > "$TMP"
-echo "REUSE_OPT_LINT=${REUSE_OPT_LINT}" >> "$TMP"
-
 # Compose name for docker container derived from user__repo
 # + limit to 255 characters in total (Docker limit)
 # + add a short hash from the whole repository URL
@@ -38,12 +37,20 @@ DNAME_REPO="$(echo "$(basename "$(dirname "${REPO}")")__$(basename "${REPO}")" |
 DNAME_HASH="$(echo "${REPO}" | xxh32sum | awk '{print $1}')"
 DNAME="$(echo "${DNAME_REPO}__${DNAME_HASH}" | sed -E -e 's/^[^a-zA-Z0-9]//' -e 's/[^a-zA-Z0-9_.-]//g')"
 
+# Create ENV file containing REUSE args
+cat << EOF > "$TMP"
+REUSE_GLOBAL_OPTIONS=${REUSE_GLOBAL_OPTIONS}
+REUSE_LINT_OPTIONS=${REUSE_LINT_OPTIONS}
+REUSE_SPDX_OPTIONS=${REUSE_SPDX_OPTIONS}
+SEPARATOR=${DNAME}
+EOF
+
 # Run docker image and return status
 docker run --env-file "$TMP" --name "${DNAME}" --rm reuse-api-worker-runner "${REPO}"
-status=$?
+lint_status=$?
 
 rm "$TMP"
 
-log "Exit ${REPO} with ${status}"
+log "Exit ${REPO} with ${lint_status}"
 
-exit $status
+exit $lint_status
