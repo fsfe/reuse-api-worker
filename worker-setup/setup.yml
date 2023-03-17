@@ -28,6 +28,7 @@
         - docker.io
         - git
         - xxhash
+        - python3-docker
 
     - name: Start and enable Docker
       service:
