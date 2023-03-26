@@ -48,7 +48,7 @@
         user: reuse
         state: present
         key: "{{ item }}"
-        key_options: 'command="reuse-lint-repo ${SSH_ORIGINAL_COMMAND#* }",no-port-forwarding,no-X11-forwarding,no-pty'
+        key_options: 'command="reuse_lint_repo ${SSH_ORIGINAL_COMMAND#* }",no-port-forwarding,no-X11-forwarding,no-pty'
       with_file:
         - files/reuse_ed25519.pub
 
@@ -57,7 +57,7 @@
         user: root
         state: present
         key: "{{ item }}"
-        key_options: 'command="reuse-lint-repo ${SSH_ORIGINAL_COMMAND#* }",no-port-forwarding,no-X11-forwarding,no-pty'
+        key_options: 'command="reuse_lint_repo ${SSH_ORIGINAL_COMMAND#* }",no-port-forwarding,no-X11-forwarding,no-pty'
       with_file:
         - files/test_ed25519.pub
       when: api_env == "devel"

@@ -60,7 +60,7 @@ To build the image, run `docker build -t reuse-api .`
 Running the check is fairly simple:
 
 ```text
-$ ssh -i ~/.ssh/reuse_ed25519 reuse@wrk3.api.reuse.software reuse-lint-repo https://git.fsfe.org/reuse/website
+$ ssh -i ~/.ssh/reuse_ed25519 reuse@wrk3.api.reuse.software reuse_lint_repo -r https://git.fsfe.org/reuse/website
 Cloning into '/project'...
 
 Checking REUSE compliance for commit d3121becd4d715df40ba6b72394582b85d1c5cc9:
@@ -106,9 +106,9 @@ Now you can task the local worker with REUSE checks. You can either do
 this via a direct Docker command, or via SSH (just like the REUSE API
 does it):
 
-`docker exec reuse-api-worker reuse-lint-repo https://github.com/fsfe/reuse-tool`
+`docker exec reuse-api-worker reuse_lint_repo -r https://github.com/fsfe/reuse-tool`
 
-`ssh -i ./worker-setup/files/test_ed25519 root@DOCKER-CONTAINER-IP reuse-lint-repo https://git.fsfe.org/reuse/api-worker`
+`ssh -i ./worker-setup/files/test_ed25519 root@DOCKER-CONTAINER-IP reuse_lint_repo -r https://git.fsfe.org/reuse/api-worker`
 
 Note that for the latter you enter as root (unlike with the production
 API), and you require the container's IP address. In a Docker network,
