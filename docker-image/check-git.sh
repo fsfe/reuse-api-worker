@@ -27,8 +27,8 @@ if [ -z "${SEPARATOR}" ]; then
   exit 43
 fi
 
-# Cloning git repo
-git clone --depth 1 "${GIT}" /project
+# Cloning git repo without output
+git clone -q --depth 1 "${GIT}" /project
 
 # Running reuse lint with optional parameters
 # shellcheck disable=SC2086
