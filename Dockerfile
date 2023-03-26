@@ -21,9 +21,9 @@ RUN echo '[reuse_api_servers] \nlocalhost ansible_connection=local' > inv.ini
 # Run Ansible on local Docker container
 RUN ansible-playbook -i inv.ini setup.yml
 
-# Create logfile
-RUN touch /tmp/reuse.log
+# Create logfiles
+RUN touch /tmp/ssh.log /tmp/reuse.log
 
-# Start SSH daemon in foregound, and read log file
+# Start SSH daemon in foregound, and read log files
 RUN mkdir /var/run/sshd
-CMD /usr/sbin/sshd -E /tmp/reuse.log && tail -f /tmp/reuse.log
+CMD /usr/sbin/sshd -E /tmp/ssh.log && tail -f /tmp/*.log
