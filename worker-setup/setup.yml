@@ -12,11 +12,11 @@
 
     - name: Upgrade all packages to the latest version
       apt:
-        name: "*"
-        state: latest
-        update_cache: yes
+        upgrade: true
+        update_cache: true
+        force_apt_get: true
       tags:
-      - upgrade
+        - upgrade
 
     - name: Install dependencies
       apt:
@@ -24,16 +24,17 @@
         state: present
       vars:
         packages:
-        - cron
-        - docker.io
-        - git
-        - xxhash
+          - cron
+          - docker.io
+          - git
+          - python3
+          - python3-docker
 
     - name: Start and enable Docker
       service:
         name: docker
         state: started
-        enabled: yes
+        enabled: true
       when: api_env != "devel"
 
     - name: Create reuse user
@@ -47,7 +48,7 @@
         user: reuse
         state: present
         key: "{{ item }}"
-        key_options: 'command="reuse-lint-repo ${SSH_ORIGINAL_COMMAND#* }",no-port-forwarding,no-X11-forwarding,no-pty'
+        key_options: 'command="reuse_lint_repo ${SSH_ORIGINAL_COMMAND#* }",no-port-forwarding,no-X11-forwarding,no-pty'
       with_file:
         - files/reuse_ed25519.pub
 
@@ -56,7 +57,7 @@
         user: root
         state: present
         key: "{{ item }}"
-        key_options: 'command="reuse-lint-repo ${SSH_ORIGINAL_COMMAND#* }",no-port-forwarding,no-X11-forwarding,no-pty'
+        key_options: 'command="reuse_lint_repo ${SSH_ORIGINAL_COMMAND#* }",no-port-forwarding,no-X11-forwarding,no-pty'
       with_file:
         - files/test_ed25519.pub
       when: api_env == "devel"
@@ -69,14 +70,14 @@
         rm -rf reuse-api/
         docker rmi $(docker images | grep "<none>" | awk "{print \$3}") || true
       tags:
-      - docker
-      - upgrade
+        - docker
+        - upgrade
       when: api_env != "devel"
 
     - name: Deploy wrapper script
       copy:
-        src: files/reuse-lint-repo
-        dest: /usr/local/bin/reuse-lint-repo
+        src: files/reuse_lint_repo.py
+        dest: /usr/local/bin/reuse_lint_repo
         owner: reuse
         group: root
         mode: "0755"
