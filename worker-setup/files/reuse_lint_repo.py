@@ -18,6 +18,7 @@ from uuid import uuid4
 
 import docker
 
+
 parser = argparse.ArgumentParser(description=__doc__)
 
 # Arguments
@@ -89,6 +90,7 @@ def repourl_to_name(url: str) -> str:
 
 def start_container(image: str, name: str, env: list) -> docker.models.containers.Container:
     """Start the Docker container and handle potential issues"""
+    # pylint: disable=used-before-assignment
     # Try to find container. If it exists, delete it
     try:
         container = dclient.containers.get(name)
@@ -139,7 +141,7 @@ def main():
     """Main function"""
     log.info(
         "Check repo %s with optional arguments. Global:%s, Lint:%s, SPDX:%s",
-        args.repo,
+        args.repo,  # pylint: disable=used-before-assignment
         args.opt_glob,
         args.opt_lint,
         args.opt_spdx,
@@ -158,7 +160,7 @@ def main():
     # Convert e.g. https://git.fsfe.org/reuse/api to reuse_api
     reponame = repourl_to_name(args.repo)
     # Define docker container name (reponame + repoid), e.g. reuse_api_45bb0095
-    dname = f"{reponame}_{REPOID}"
+    dname = f"{reponame}_{REPOID}"  # pylint: disable=used-before-assignment
     # Define separator containing a random piece (repoid + sessionid), e.g.
     # REUSE-separator-45bb0095-abc123
     separator = f"REUSE-separator-{REPOID}-{sessionid}"
