@@ -29,10 +29,14 @@ fi
 # Cloning git repo without output
 git clone -q --depth 1 "${GIT}" /project
 
-# Running reuse lint with optional parameters, plain output
+# Running reuse lint, plain output
 # shellcheck disable=SC2086
 lint_md_output="$(reuse ${REUSE_GLOBAL_OPTIONS} lint)"
 lint_status=$?
+
+## Running reuse lint, JSON output
+# shellcheck disable=SC2086
+lint_json_output="$(reuse ${REUSE_GLOBAL_OPTIONS} lint --json)"
 
 # Running reuse spdx with optional parameters
 # shellcheck disable=SC2086
@@ -41,6 +45,8 @@ spdx_output="$(reuse ${REUSE_GLOBAL_OPTIONS} spdx ${REUSE_SPDX_OPTIONS})"
 # Paste output of lint and spdx, separated by $SEPARATOR
 cat << EOF
 ${lint_md_output}
+${SEPARATOR}
+${lint_json_output}
 ${SEPARATOR}
 ${spdx_output}
 EOF

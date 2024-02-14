@@ -171,7 +171,7 @@ def main():
 
     # Split output into separate parts
     try:
-        lint_output, spdx_output = split_container_output(output, separator)
+        lint_output, lint_output_json, spdx_output = split_container_output(output, separator)
     except ValueError as err:
         log.warning(
             "Unable to split output into parts. Probably the earlier check command failed: %s", err
@@ -181,7 +181,12 @@ def main():
         spdx_output = None
 
     # Put parts into dict, and echo it (so SSH can see it)
-    result = {"exit_code": exit_code, "lint_output": lint_output, "spdx_output": spdx_output}
+    result = {
+        "exit_code": exit_code,
+        "lint_output": lint_output,
+        "lint_output_json": lint_output_json,
+        "spdx_output": spdx_output,
+    }
     print(json.dumps(result))
     # Exit with the check-git.sh exit code (which is the lint exit code)
     sys.exit(exit_code)
