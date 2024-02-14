@@ -38,14 +38,6 @@ parser.add_argument(
     help="Global option for all REUSE commands. Can be used multiple times",
 )
 parser.add_argument(
-    "-l",
-    "--lint-options",
-    dest="opt_lint",
-    action="append",
-    default=[],
-    help="Additional option for `reuse lint`. Can be used multiple times",
-)
-parser.add_argument(
     "-s",
     "--spdx-options",
     dest="opt_spdx",
@@ -140,10 +132,9 @@ def split_container_output(text: str, separator: str) -> list:
 def main():
     """Main function"""
     log.info(
-        "Check repo %s with optional arguments. Global:%s, Lint:%s, SPDX:%s",
+        "Check repo %s with optional arguments. Global:%s, SPDX:%s",
         args.repo,  # pylint: disable=used-before-assignment
         args.opt_glob,
-        args.opt_lint,
         args.opt_spdx,
     )
 
@@ -168,7 +159,6 @@ def main():
     # Set environment for Docker container running check-git.sh
     env = [
         f"REUSE_GLOBAL_OPTIONS={' '.join(args.opt_glob)}",
-        f"REUSE_LINT_OPTIONS={' '.join(args.opt_lint)}",
         f"REUSE_SPDX_OPTIONS={' '.join(args.opt_spdx)}",
         f"SEPARATOR={separator}",
     ]

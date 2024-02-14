@@ -8,8 +8,7 @@
 # code of lint.
 #
 # The only normal argument is $1, the Git repo URL. It takes its further option
-# as ENV variables: REUSE_GLOBAL_OPTIONS, REUSE_LINT_OPTIONS,
-# REUSE_SPDX_OPTIONS, SEPARATOR
+# as ENV variables: REUSE_GLOBAL_OPTIONS, REUSE_SPDX_OPTIONS, SEPARATOR
 #
 # The script assumes that the current working directory is /project
 
@@ -30,9 +29,9 @@ fi
 # Cloning git repo without output
 git clone -q --depth 1 "${GIT}" /project
 
-# Running reuse lint with optional parameters
+# Running reuse lint with optional parameters, plain output
 # shellcheck disable=SC2086
-lint_output="$(reuse ${REUSE_GLOBAL_OPTIONS} lint ${REUSE_LINT_OPTIONS})"
+lint_md_output="$(reuse ${REUSE_GLOBAL_OPTIONS} lint)"
 lint_status=$?
 
 # Running reuse spdx with optional parameters
@@ -41,7 +40,7 @@ spdx_output="$(reuse ${REUSE_GLOBAL_OPTIONS} spdx ${REUSE_SPDX_OPTIONS})"
 
 # Paste output of lint and spdx, separated by $SEPARATOR
 cat << EOF
-${lint_output}
+${lint_md_output}
 ${SEPARATOR}
 ${spdx_output}
 EOF
