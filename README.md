@@ -38,7 +38,7 @@ Just run
 ``` shell
 ansible-playbook setup.yml \
         -i inventory/hosts \
-        -l "reuse_api_server" \
+        -l "reuse_api_servers" \
         # limit to single server \
         # -l "wrk3.api.reuse.software" \
 ```
