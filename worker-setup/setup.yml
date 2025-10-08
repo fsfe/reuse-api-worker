@@ -65,7 +65,7 @@
     - name: Build reuse-api-worker-runner Docker image
       raw: |
         docker pull fsfe/reuse
-        git clone https://git.fsfe.org/reuse/api-worker.git reuse-api
+        git clone --depth 1 https://git.fsfe.org/reuse/api-worker.git reuse-api
         docker build --no-cache -t reuse-api-worker-runner reuse-api/docker-image/
         rm -rf reuse-api/
         docker rmi $(docker images | grep "<none>" | awk "{print \$3}") || true
