@@ -68,7 +68,8 @@
         git clone --depth 1 https://git.fsfe.org/reuse/api-worker.git reuse-api
         docker build --no-cache -t reuse-api-worker-runner reuse-api/docker-image/
         rm -rf reuse-api/
-        docker rmi $(docker images | grep "<none>" | awk "{print \$3}") || true
+        docker rmi $(docker images | awk \'$1 == "<none>" {print $3}\') || true
+
       tags:
         - docker
         - upgrade
