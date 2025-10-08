@@ -227,10 +227,7 @@ if __name__ == "__main__":
     # Start logger, providing the repo-ID
     log = logging.getLogger(REPOID)
     # Set loglevel based on --verbose flag
-    if args.verbose:
-        log.setLevel(logging.DEBUG)
-    else:
-        log.setLevel(logging.INFO)
+    log.setLevel(logging.DEBUG if args.verbose else logging.INFO)
 
     # Initiate Docker client
     try:
