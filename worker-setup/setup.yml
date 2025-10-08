@@ -65,9 +65,10 @@
     - name: Build reuse-api-worker-runner Docker image
       raw: |
         docker pull fsfe/reuse
-        git clone --depth 1 https://git.fsfe.org/reuse/api-worker.git
+        curl -sO https://git.fsfe.org/reuse/api-worker/archive/master.tar.gz
+        tar xf master.tar.gz
         docker build --no-cache -t reuse-api-worker-runner api-worker/docker-image/
-        rm -rf api-worker/
+        rm -rf master.tar.gz api-worker/
         docker image prune --force
 
       tags:
