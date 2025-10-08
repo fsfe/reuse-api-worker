@@ -87,7 +87,9 @@ def repourl_to_name(url: str) -> str:
     return f"{user}_{repo}"
 
 
-def start_container(image: str, name: str, env: list) -> docker.models.containers.Container:
+def start_container(
+    image: str, name: str, env: list
+) -> docker.models.containers.Container:
     """Start the Docker container and handle potential issues"""
     # Try to find container. If it exists, delete it
     try:
@@ -100,7 +102,9 @@ def start_container(image: str, name: str, env: list) -> docker.models.container
     # Try to start container
     try:
         log.debug("Starting container %s", name)
-        container = dclient.containers.run(image, environment=env, name=name, detach=True)
+        container = dclient.containers.run(
+            image, environment=env, name=name, detach=True
+        )
     except docker.errors.ContainerError as err:
         log.critical("Docker container wasn't able to start: %s", err)
         sys.exit(1)
@@ -108,7 +112,9 @@ def start_container(image: str, name: str, env: list) -> docker.models.container
     return container
 
 
-def run_check(container: docker.models.containers.Container, repourl: str) -> tuple[int, str]:
+def run_check(
+    container: docker.models.containers.Container, repourl: str
+) -> tuple[int, str]:
     """Run check-git.sh inside of container and return exit code and output"""
     container_name = container.name
     try:
@@ -182,14 +188,19 @@ def main():
         lint_output, spdx_output = split_container_output(output, separator)
     except ValueError as err:
         log.warning(
-            "Unable to split output into parts. Probably the earlier check command failed: %s", err
+            "Unable to split output into parts. Probably the earlier check command failed: %s",
+            err,
         )
         log.warning("Only passing lint output, removing all others")
         lint_output = output
         spdx_output = None
 
     # Put parts into dict, and echo it (so SSH can see it)
-    result = {"exit_code": exit_code, "lint_output": lint_output, "spdx_output": spdx_output}
+    result = {
+        "exit_code": exit_code,
+        "lint_output": lint_output,
+        "spdx_output": spdx_output,
+    }
     print(json.dumps(result))
     # Exit with the check-git.sh exit code (which is the lint exit code)
     sys.exit(exit_code)
