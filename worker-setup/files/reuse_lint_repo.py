@@ -16,6 +16,7 @@ import re
 import sys
 from uuid import uuid4
 
+from docker.models.containers import Container
 import docker
 
 parser = argparse.ArgumentParser(description=__doc__)
@@ -87,9 +88,7 @@ def repourl_to_name(url: str) -> str:
     return f"{user}_{repo}"
 
 
-def start_container(
-    image: str, name: str, env: list
-) -> docker.models.containers.Container:
+def start_container(image: str, name: str, env: list) -> Container:
     """Start the Docker container and handle potential issues"""
     # Try to find container. If it exists, delete it
     try:
@@ -112,9 +111,7 @@ def start_container(
     return container
 
 
-def run_check(
-    container: docker.models.containers.Container, repourl: str
-) -> tuple[int, str]:
+def run_check(container: Container, repourl: str) -> tuple[int, str]:
     """Run check-git.sh inside of container and return exit code and output"""
     container_name = container.name
     try:
