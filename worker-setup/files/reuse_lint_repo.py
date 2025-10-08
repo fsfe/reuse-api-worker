@@ -142,7 +142,6 @@ def split_container_output(text: str, separator: str) -> list:
 
 
 def main():
-    """Main function"""
     log.info(
         "Check repo %s with optional arguments. Global:%s, Lint:%s, SPDX:%s",
         args.repo,
