@@ -70,7 +70,7 @@ parser.add_argument(
 
 
 # Constants
-DOCKER_IMAGE = "reuse-api-worker-runner"
+DOCKER_IMAGE: str = "reuse-api-worker-runner"
 
 
 def nospecialchars(string: str) -> str:
@@ -80,9 +80,9 @@ def nospecialchars(string: str) -> str:
 
 def repourl_to_name(url: str) -> str:
     """Convert a repository URL to user_repo, removing all special chars"""
-    url = url.rstrip("/")
-    user = nospecialchars(url.split("/")[-2])
-    repo = nospecialchars(url.split("/")[-1])
+    url: str = url.rstrip("/")
+    user: str = nospecialchars(url.split("/")[-2])
+    repo: str = nospecialchars(url.split("/")[-1])
 
     return f"{user}_{repo}"
 
