@@ -92,40 +92,38 @@ def start_container(image: str, name: str, env: list) -> Container:
     """Start the Docker container and handle potential issues"""
     # Try to find container. If it exists, delete it
     try:
-        container = dclient.containers.get(name)
+        cnt = dclient.containers.get(name)
         log.warning("A container with the name %s already exists. Removing it", name)
-        container.remove(force=True)
+        cnt.remove(force=True)
     except docker.errors.NotFound:
         log.debug("Container name %s is still available", name)
 
     # Try to start container
     try:
         log.debug("Starting container %s", name)
-        container = dclient.containers.run(
-            image, environment=env, name=name, detach=True
-        )
+        cnt = dclient.containers.run(image, environment=env, name=name, detach=True)
     except docker.errors.ContainerError as err:
         log.critical("Docker container wasn't able to start: %s", err)
         sys.exit(1)
 
-    return container
+    return cnt
 
 
-def run_check(container: Container, repourl: str) -> tuple[int, str]:
+def run_check(cnt: Container, repourl: str) -> tuple[int, str]:
     """Run check-git.sh inside of container and return exit code and output"""
-    container_name = container.name
+    cnt_name = cnt.name
     try:
-        log.debug("Running check-git.sh in container %s", container_name)
-        exit_code, output = container.exec_run(cmd=["check-git.sh", repourl])
-        log.info("Container %s exited with code %s", container_name, exit_code)
+        log.debug("Running check-git.sh in container %s", cnt_name)
+        exit_code, output = cnt.exec_run(cmd=["check-git.sh", repourl])
+        log.info("Container %s exited with code %s", cnt_name, exit_code)
     except Exception as err:  # pylint: disable=broad-except
         log.error("An error running check-git.sh occured: %s", err)
         sys.exit(1)
     finally:
         # Delete Docker container (this is necessary because if we had `remove=True`
         # in the run command, we couldn't access the output in case of an error :/)
-        log.debug("Force-removing container %s", container_name)
-        container.remove(force=True)
+        log.debug("Force-removing container %s", cnt_name)
+        cnt.remove(force=True)
 
     # Return decoded results
     return exit_code, output.decode("UTF-8")
