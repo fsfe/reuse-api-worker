@@ -52,7 +52,8 @@
       with_file:
         - files/reuse_ed25519.pub
 
-    - name: Set additional authorized_keys for root user if devel environment
+    - name: If developing, set additional authorized_keys for root user
+      when: api_env == "devel"
       authorized_key:
         user: root
         state: present
@@ -60,7 +61,6 @@
         key_options: 'command="reuse_lint_repo ${SSH_ORIGINAL_COMMAND#* }",no-port-forwarding,no-X11-forwarding,no-pty'
       with_file:
         - files/test_ed25519.pub
-      when: api_env == "devel"
 
     - name: Build reuse-api-worker-runner Docker image
       raw: |
