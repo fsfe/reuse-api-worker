@@ -4,16 +4,14 @@
 services:
   reuse-api-worker:
     container_name: reuse-api-worker
-    build: .
     image: reuse-api-worker
     restart: always
+    build: .
     expose:
       - "22"
-    # Docker in container uses the host's Docker socket
-    volumes:
+    volumes: # Docker in container uses the host's Docker socket
       - /var/run/docker.sock:/var/run/docker.sock
-    # Hook onto REUSE API network
-    networks:
+    networks: # Hook onto REUSE API network
       - reuse-api-net
 
 networks:
