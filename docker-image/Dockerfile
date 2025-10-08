@@ -3,11 +3,10 @@
 
 FROM fsfe/reuse
 
-RUN mkdir /project
-
-WORKDIR /project
-
 COPY check-git.sh /bin/
 COPY wait.sh /bin/
+
+RUN mkdir /project
+WORKDIR /project
 
 ENTRYPOINT ["wait.sh"]
