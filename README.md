@@ -38,7 +38,7 @@ Just run
 ``` shell
 ansible-playbook setup.yml \
         -i inventory/hosts \
-        -l "reuse_api_server" \
+        -l "reuse_api_servers" \
         # limit to single server \
         # -l "wrk3.api.reuse.software" \
 ```
@@ -106,7 +106,7 @@ Now you can task the local worker with REUSE checks. You can either do
 this via a direct Docker command, or via SSH (just like the REUSE API
 does it):
 
-`docker exec reuse-api-worker reuse_lint_repo -r https://github.com/fsfe/reuse-tool`
+`docker exec reuse-api-worker reuse_lint_repo -r https://codeberg.org/fsfe/reuse-tool`
 
 `ssh -i ./worker-setup/files/test_ed25519 root@DOCKER-CONTAINER-IP reuse_lint_repo -r https://git.fsfe.org/reuse/api-worker`
 
